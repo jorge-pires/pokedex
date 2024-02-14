@@ -1,0 +1,9 @@
+a {
+    height: 20px;
+    width: 100px;
+    border-radius: 5px;
+    background-color: black;
+    font-size: 10px;
+    text-align: center;
+    padding: 25px;
+}
