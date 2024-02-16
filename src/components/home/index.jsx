@@ -2,7 +2,12 @@ import styled from "styled-components"
 import { useState, useEffect } from "react";
 
 async function createDeck() {
-    const response = await fetch("https://pokeapi.co/api/v2/pokemon");
+    const response = await fetch("https://pokeapi.co/api/v2/pokemon/?limit=10&offset=10");
+    return await response.json();
+}
+
+async function createCards(pokemons) {
+    const response = await fetch(pokemons);
     return await response.json();
 }
 
@@ -16,15 +21,25 @@ export const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await createDeck()
+            const links = await data.results.map((link) => {
+                return link.url
+            })
+
+            const pokemons = links.map(async(link) =>{
+                const pokemon = await createCards(link) 
+                return pokemon
+            })
+
+            console.log(pokemons)
 
             setDeck({
-                cards: data
+                cards: data.results
             })
         }
         fetchData()
     }, [])
 
-    console.log(deck)
+    // console.log(deck)
 
     return (
         <Div>
@@ -34,10 +49,20 @@ export const Home = () => {
             </header>
             <main>
                 <section>
-                    <a href="/">
-                        <h3>Gato</h3>
-                        <img src="http://placekitten.com/200/300" alt="" />
-                    </a>
+                    <ul>
+                        {
+                            deck.cards.map((card, index) => {
+                                return (
+                                    <li key={index}>
+                                        <a href="/">
+                                            <h3>{card.name}</h3>
+                                            <img src={card.url} alt={card.name} />
+                                        </a>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
                 </section>
                 <Load href="/">Carregar mais</Load>
             </main>
@@ -47,19 +72,6 @@ export const Home = () => {
         </Div>
     )
 }
-
-// {
-//     deck.cards.map((card, index) => {
-//         return (
-//             <li key={index}>
-//                 <a href="/">
-//                     <h3>{card.name}</h3>
-//                     <img src="http://placekitten.com/200/300" alt="" />
-//                 </a>
-//             </li>
-//         )
-//     })
-// }
 
 const Div = styled.div`
     display: flex;
@@ -82,11 +94,20 @@ const Div = styled.div`
     main {
         width: 100%;
         height: 100%;
-        display: flex;
-        align-items: center;
         position: relative;
         padding: 0px 100px 125px 100px;
         // ajustar o padding-bottom
+    }
+
+    ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    li {
+        padding: 50px 50px;
+        width: 260px;
     }
 
     h3 {
