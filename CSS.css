@@ -6,4 +6,8 @@ a {
     font-size: 10px;
     text-align: center;
     padding: 25px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 0 auto;
+    
 }
