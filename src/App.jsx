@@ -1,12 +1,11 @@
-import { Home } from "./components/home"
-
+import { AppRoutes } from './pages/routes'
 
 function App() {
   return (
     <>
-      <Home />
+      <AppRoutes/>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
