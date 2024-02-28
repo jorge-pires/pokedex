@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, {css} from "styled-components"
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
 
@@ -34,6 +34,8 @@ const CardsList = (props) => {
 
 export const Home = () => {
 
+    const [invisible, setInvisible] = useState(false)
+
     const [deck, setDeck] = useState({
         cards: []
     })
@@ -48,7 +50,7 @@ export const Home = () => {
             // Promise.all([array de promises que quero o retorno])
             const pokemons = await Promise.all(links.map((url) => createCards(url)))
 
-            console.log(pokemons)
+            // console.log(pokemons)
 
             setDeck({
                 cards: pokemons
@@ -69,25 +71,23 @@ export const Home = () => {
             cards: [...deck.cards, ...newPokemons]
         })
 
-        // let Load = styled.button`
-        //     display: none;
-        // `
+        setInvisible(true)
     }
 
     return (
         <Div>
             <header id="home">
-                <Theme href="/">Trocar tema</Theme>
-                <h1>Escolha seu Pokémon favorito</h1>
+                <Theme href="/">Change theme</Theme>
+                <h1>Select your favorite Pokémon</h1>
             </header>
             <main>
                 <section>
-                    {deck.cards.length > 0 ? <CardsList cards={deck.cards} /> : "Nenhum Pokémon encontrado"}
+                    {deck.cards.length > 0 ? <CardsList cards={deck.cards} /> : "No Pokémon found"}
                 </section>
             </main>
             <footer>
                 <Top href="#home">home</Top>
-                <Load onClick={load}>Carregar mais</Load>
+                <Load onClick={load} isInvisible={invisible}>Load more</Load>
             </footer>
         </Div>
     )
@@ -95,12 +95,13 @@ export const Home = () => {
 
 const Div = styled.div`
     min-height: 100vh;
+    overflow: hidden;
 
     header {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100%;
+        width: 100vw;
         padding: 70px;
         position: relative;
     }
@@ -110,7 +111,7 @@ const Div = styled.div`
     }
 
     main {
-        width: 100%;
+        width: 100vw;
         padding: 0px 80px 120px 80px;
         // ajustar o padding-bottom
     }
@@ -127,7 +128,7 @@ const Div = styled.div`
 
     footer {
         background-color: white;
-        width: 100%;
+        width: 100vw;
         height: 70px;
         display: flex;
         justify-content: center;
@@ -166,13 +167,14 @@ const Pokemon = styled.li`
 
 let Load = styled.button`
     position: absolute;
-    bottom: 90px;
-    right: 30px;
+    bottom: 95px;
+    right: 35px;
     background-color: black;
     font-size: 10px;
     padding: 8px;
     color: white;
     cursor: pointer;
+    visibility: ${({ isInvisible }) => (isInvisible ? 'visible' : 'hidden')};
 `
 
 const Top = styled.a`
@@ -186,5 +188,4 @@ const Top = styled.a`
     transform: translateY(-58%);
     background-color: white;
     font-size: 12px;
-    text-shadow: none;
 `

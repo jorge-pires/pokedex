@@ -1,3 +1,13 @@
-a {
-    display: none;
+div {
+    overflow: hidden;
+    margin: 5px;
+    font-size: 16px;
+    width: auto;
+    line-height: 5px;
+    min-width: 5px;
+    padding: auto;
+    align-items: start;
+    flex-wrap: wrap;
+    margin-left: 10px;
+    width: 100%;
 }
