@@ -9,8 +9,6 @@ export const GlobalStyle = createGlobalStyle`
         outline: none;
         box-sizing: border-box;
         font-family: 'Press Start 2P', system-ui;
-        background-color: #de0528;
-        text-shadow: 0.5px 0.5px 0px white;
     }
 
     a{

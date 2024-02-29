@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
+import { ThemeContext } from '../../contexts/theme-contexts'
+import React, {useContext} from "react";
 
 async function getCard(id) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
@@ -13,35 +15,13 @@ const getAbilitiesDescription = async (api) => {
     return await response.json()
 }
 
-export const PokemonCard = () => {
+const PokemonDescription = ({card}) => {
 
-    const [card, setCard] = useState({ skills: '', description: '' })
-
-    // console.log(card)
-
-    const { id } = useParams()
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const resultCard = await getCard(id)
-
-            const abilitiesLinks = await resultCard.abilities.map((link) => {
-                return link.ability.url
-            })
-            const abilitiesDescription = await Promise.all(abilitiesLinks.map((api) => getAbilitiesDescription(api)))
-
-            setCard({ skills: resultCard, description: abilitiesDescription })
-        }
-        fetchData()
-    }, [])
+    const {theme} = useContext (ThemeContext)
 
     return (
-        <Div>
-            <Header id='home'>
-                <Link to='/'>Return to all pokémon</Link>
-            </Header>
-            {card.skills && (<Section>
-                <h2>{card.skills.name}</h2>
+        <>
+            <h2>{card.skills.name}</h2>
                 <img src={card.skills.sprites.front_default} alt={card.skills.name} />
                 <ul>
                     <h3>List of abilities:</h3>
@@ -69,6 +49,41 @@ export const PokemonCard = () => {
                         </li>
                     ))}
                 </ul>
+        </>
+    )
+}
+
+export const PokemonCard = () => {
+
+    const [card, setCard] = useState({ skills: '', description: '' })
+
+    const {theme} = useContext (ThemeContext)
+
+    // console.log(card)
+
+    const { id } = useParams()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const resultCard = await getCard(id)
+
+            const abilitiesLinks = await resultCard.abilities.map((link) => {
+                return link.ability.url
+            })
+            const abilitiesDescription = await Promise.all(abilitiesLinks.map((api) => getAbilitiesDescription(api)))
+
+            setCard({ skills: resultCard, description: abilitiesDescription })
+        }
+        fetchData()
+    }, [])
+
+    return (
+        <Div theme={theme}>
+            <Header theme={theme} id='home'>
+                <Link to='/'>Return to all pokémon</Link>
+            </Header>
+            {card.skills && (<Section theme={theme}>
+                {card.description.length > 0 ? <PokemonDescription card={card} /> : "No Pokémon found"}
                 <Footer>
                     <a href="#home">home</a>
                 </Footer>
@@ -87,6 +102,9 @@ const Section = styled.section`
     justify-content: center;
     flex-direction: column;
     padding: 120px 70px;
+    background-color: ${props => props.theme.background};
+    text-shadow: 0.5px 0.5px 0px ${props => props.theme.textShadow};
+    color: ${props => props.theme.color};
 
     img{
         max-width: 200px;
@@ -113,10 +131,10 @@ const Section = styled.section`
             }
 
             p{
-                background-color: white;
+                background-color: ${props => props.theme.descriptionBackground};
                 padding: 8px;
                 text-shadow: none;
-                color: black;
+                color: ${props => props.theme.color};
                 font-size: 12px;
                 line-height: 20px;
                 padding: 15px;
@@ -134,11 +152,11 @@ const Header = styled.header`
         top: 25px;
         left: 35px;
         
-        background-color: black;
+        background-color: ${props => props.theme.buttonBackground};
         font-size: 10px;
         padding: 8px;
         text-shadow: none;
-        color: white;
+        color: ${props => props.theme.buttonColor};
     }
 `
 

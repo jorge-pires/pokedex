@@ -1,6 +1,9 @@
-import styled, {css} from "styled-components"
+import styled from "styled-components"
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
+import { ThemeContext } from '../../contexts/theme-contexts'
+import React, {useContext} from "react";
+import { ButtonTheme } from '../button-theme'
 
 async function createDeck(array) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=10&offset=${array}`);
@@ -13,12 +16,15 @@ async function createCards(pokemons) {
 }
 
 const CardsList = (props) => {
+
+    const {theme} = useContext (ThemeContext)
+
     return (
         <ul>
             {
                 props.cards.map((card, index) => {
                     return (
-                        <Pokemon key={index}>
+                        <Pokemon Load theme={theme} key={index}>
                             <Link to={`/pokemon/${card.id}`}>
                                 <h3>{card.name}</h3>
                                 <img src={card.sprites.front_default} alt={card.name} />
@@ -31,14 +37,15 @@ const CardsList = (props) => {
     )
 }
 
-
 export const Home = () => {
 
-    const [invisible, setInvisible] = useState(false)
+    const [visible, setVisible] = useState(true)
 
     const [deck, setDeck] = useState({
         cards: []
     })
+
+    const {theme} = useContext (ThemeContext)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,13 +78,13 @@ export const Home = () => {
             cards: [...deck.cards, ...newPokemons]
         })
 
-        setInvisible(true)
+        setVisible(false)
     }
 
     return (
-        <Div>
+        <Div theme={theme}>
             <header id="home">
-                <Theme href="/">Change theme</Theme>
+                <ButtonTheme />
                 <h1>Select your favorite Pokémon</h1>
             </header>
             <main>
@@ -87,7 +94,7 @@ export const Home = () => {
             </main>
             <footer>
                 <Top href="#home">home</Top>
-                <Load onClick={load} isInvisible={invisible}>Load more</Load>
+                <Load theme={theme} onClick={load} isVisible={visible}>Load more</Load>
             </footer>
         </Div>
     )
@@ -96,6 +103,9 @@ export const Home = () => {
 const Div = styled.div`
     min-height: 100vh;
     overflow: hidden;
+    background-color: ${props => props.theme.background};
+    text-shadow: 0.5px 0.5px 0px ${props => props.theme.textShadow};
+    color: ${props => props.theme.color};
 
     header {
         display: flex;
@@ -139,17 +149,6 @@ const Div = styled.div`
     }
 `
 
-const Theme = styled.a`
-    position: absolute;
-    top: 25px;
-    left: 35px;
-    
-    background-color: black;
-    font-size: 10px;
-    padding: 8px;
-    text-shadow: none;
-    color: white;
-`
 const Pokemon = styled.li`
     a{
         display: flex;
@@ -158,6 +157,7 @@ const Pokemon = styled.li`
         align-items: center;
         width: 142px;
         font-size: 12px;
+        color: ${props => props.theme.color};
     }
 
     img{
@@ -165,16 +165,16 @@ const Pokemon = styled.li`
     }
 `
 
-let Load = styled.button`
+const Load = styled.button`
     position: absolute;
     bottom: 95px;
     right: 35px;
-    background-color: black;
+    background-color: ${props => props.theme.buttonBackground};
     font-size: 10px;
     padding: 8px;
-    color: white;
+    color: ${props => props.theme.buttonColor};
     cursor: pointer;
-    visibility: ${({ isInvisible }) => (isInvisible ? 'visible' : 'hidden')};
+    visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
 `
 
 const Top = styled.a`
