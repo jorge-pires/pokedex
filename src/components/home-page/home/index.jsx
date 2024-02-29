@@ -1,9 +1,9 @@
 import styled from "styled-components"
 import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom'
-import { ThemeContext } from '../../contexts/theme-contexts'
-import React, {useContext} from "react";
+import { ThemeContext } from '../../../contexts/theme-contexts'
+import React, { useContext } from "react";
 import { ButtonTheme } from '../button-theme'
+import { CardsList } from '../cards-list'
 
 async function createDeck(array) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=10&offset=${array}`);
@@ -15,28 +15,6 @@ async function createCards(pokemons) {
     return await response.json();
 }
 
-const CardsList = (props) => {
-
-    const {theme} = useContext (ThemeContext)
-
-    return (
-        <ul>
-            {
-                props.cards.map((card, index) => {
-                    return (
-                        <Pokemon Load theme={theme} key={index}>
-                            <Link to={`/pokemon/${card.id}`}>
-                                <h3>{card.name}</h3>
-                                <img src={card.sprites.front_default} alt={card.name} />
-                            </Link>
-                        </Pokemon>
-                    )
-                })
-            }
-        </ul>
-    )
-}
-
 export const Home = () => {
 
     const [visible, setVisible] = useState(true)
@@ -45,7 +23,7 @@ export const Home = () => {
         cards: []
     })
 
-    const {theme} = useContext (ThemeContext)
+    const { theme } = useContext(ThemeContext)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -56,8 +34,6 @@ export const Home = () => {
 
             // Promise.all([array de promises que quero o retorno])
             const pokemons = await Promise.all(links.map((url) => createCards(url)))
-
-            // console.log(pokemons)
 
             setDeck({
                 cards: pokemons
@@ -89,7 +65,7 @@ export const Home = () => {
             </header>
             <main>
                 <section>
-                    {deck.cards.length > 0 ? <CardsList cards={deck.cards} /> : "No Pokémon found"}
+                    {deck.cards.length > 0 ? <CardsList cards={deck.cards} /> : "No Pokémon found, check your internet connection"}
                 </section>
             </main>
             <footer>
@@ -146,22 +122,6 @@ const Div = styled.div`
         position: fixed;
         bottom: 0;
         text-shadow: none;
-    }
-`
-
-const Pokemon = styled.li`
-    a{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 142px;
-        font-size: 12px;
-        color: ${props => props.theme.color};
-    }
-
-    img{
-        width: 130px;
     }
 `
 

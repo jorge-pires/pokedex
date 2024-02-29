@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ThemeContext, themes } from '../../contexts/theme-contexts';
+import { ThemeContext, themes } from '../../../contexts/theme-contexts';
 import React, {useContext} from "react";
 
 export const ButtonTheme = () => {

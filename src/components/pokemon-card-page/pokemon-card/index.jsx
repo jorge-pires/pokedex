@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
-import { ThemeContext } from '../../contexts/theme-contexts'
-import React, {useContext} from "react";
+import { ThemeContext } from '../../../contexts/theme-contexts'
+import React, { useContext } from "react";
+import { PokemonCardDescription } from '../pokemon-card-description'
 
 async function getCard(id) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
@@ -15,51 +16,11 @@ const getAbilitiesDescription = async (api) => {
     return await response.json()
 }
 
-const PokemonDescription = ({card}) => {
-
-    const {theme} = useContext (ThemeContext)
-
-    return (
-        <>
-            <h2>{card.skills.name}</h2>
-                <img src={card.skills.sprites.front_default} alt={card.skills.name} />
-                <ul>
-                    <h3>List of abilities:</h3>
-                    {card.description.map((ability, index) =>
-                    (
-                        <li key={index}>
-                            <h4>{ability.name}:</h4>
-                            <p>{ability.effect_entries[1].effect}</p>
-                        </li>
-                    ))}
-                </ul>
-                <ul>
-                    <h3>List of moves:</h3>
-                    {card.skills.moves.map((move, index) => (
-                        <li key={index}>
-                            <p>{move.move.name}</p>
-                        </li>
-                    ))}
-                </ul>
-                <ul>
-                    <h3>Types:</h3>
-                    {card.skills.types.map((type, index) => (
-                        <li key={index}>
-                            <p>{type.type.name}</p> 
-                        </li>
-                    ))}
-                </ul>
-        </>
-    )
-}
-
 export const PokemonCard = () => {
 
     const [card, setCard] = useState({ skills: '', description: '' })
 
-    const {theme} = useContext (ThemeContext)
-
-    // console.log(card)
+    const { theme } = useContext(ThemeContext)
 
     const { id } = useParams()
 
@@ -83,7 +44,7 @@ export const PokemonCard = () => {
                 <Link to='/'>Return to all pokémon</Link>
             </Header>
             {card.skills && (<Section theme={theme}>
-                {card.description.length > 0 ? <PokemonDescription card={card} /> : "No Pokémon found"}
+                {card.description.length > 0 ? <PokemonCardDescription card={card} /> : "No Pokémon found, check your internet connection"}
                 <Footer>
                     <a href="#home">home</a>
                 </Footer>
