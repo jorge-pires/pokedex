@@ -1,16 +1,11 @@
 import styled from "styled-components"
 import { Link } from 'react-router-dom'
-import { ThemeContext } from '../../../contexts/theme-contexts'
-import React, { useContext } from "react";
 
-export const CardsList = (props) => {
-
-    const { theme } = useContext(ThemeContext)
-
+export const CardsList = ({ cards, theme }) => {
     return (
         <ul>
             {
-                props.cards.map((card, index) => {
+                cards.map((card, index) => {
                     return (
                         <Pokemon Load theme={theme} key={index}>
                             <Link to={`/pokemon/${card.id}`}>

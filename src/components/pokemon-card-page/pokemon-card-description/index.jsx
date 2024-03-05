@@ -1,8 +1,9 @@
-import React from "react";
+import styled from "styled-components"
 
-export const PokemonCardDescription = ({ card }) => {
+export const PokemonCardDescription = ({ card, theme }) => {
+
     return (
-        <>
+        <Div theme={theme}>
             <h2>{card.skills.name}</h2>
             <img src={card.skills.sprites.front_default} alt={card.skills.name} />
             <ul>
@@ -31,6 +32,44 @@ export const PokemonCardDescription = ({ card }) => {
                     </li>
                 ))}
             </ul>
-        </>
+        </Div>
     )
 }
+
+const Div = styled.div`
+    img{
+        min-width: 200px;
+    }
+
+    ul{
+        padding: 30px 0;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        flex-wrap: wrap;
+
+        h3{
+            margin-bottom: 50px;
+            width: 100%;
+        }
+
+        li{
+            margin-bottom: 30px;
+            margin-left: 30px;
+
+            h4{
+                margin-bottom: 20px;
+            }
+
+            p{
+                background-color: ${props => props.theme.descriptionBackground};
+                padding: 8px;
+                text-shadow: none;
+                color: ${props => props.theme.color};
+                font-size: 12px;
+                line-height: 20px;
+                padding: 15px;
+            }
+        }
+    }
+`

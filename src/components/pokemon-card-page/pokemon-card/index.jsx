@@ -44,7 +44,7 @@ export const PokemonCard = () => {
                 <Link to='/'>Return to all pokémon</Link>
             </Header>
             {card.skills && (<Section theme={theme}>
-                {card.description.length > 0 ? <PokemonCardDescription card={card} /> : "No Pokémon found, check your internet connection"}
+                {card.description.length > 0 ? <PokemonCardDescription card={card} theme={theme}/> : "No Pokémon found, check your internet connection"}
                 <Footer>
                     <a href="#home">home</a>
                 </Footer>
@@ -58,7 +58,6 @@ const Div = styled.div`
 `
 
 const Section = styled.section`
-    
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -66,42 +65,6 @@ const Section = styled.section`
     background-color: ${props => props.theme.background};
     text-shadow: 0.5px 0.5px 0px ${props => props.theme.textShadow};
     color: ${props => props.theme.color};
-
-    img{
-        max-width: 200px;
-    }
-
-    ul{
-        padding: 30px 0;
-        display: flex;
-        justify-content: start;
-        align-items: center;
-        flex-wrap: wrap;
-
-        h3{
-            margin-bottom: 50px;
-            width: 100%;
-        }
-
-        li{
-            margin-bottom: 30px;
-            margin-left: 30px;
-
-            h4{
-                margin-bottom: 20px;
-            }
-
-            p{
-                background-color: ${props => props.theme.descriptionBackground};
-                padding: 8px;
-                text-shadow: none;
-                color: ${props => props.theme.color};
-                font-size: 12px;
-                line-height: 20px;
-                padding: 15px;
-            }
-        }
-    }
 `
 
 const Header = styled.header`

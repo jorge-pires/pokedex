@@ -65,7 +65,7 @@ export const Home = () => {
             </header>
             <main>
                 <section>
-                    {deck.cards.length > 0 ? <CardsList cards={deck.cards} /> : "No Pokémon found, check your internet connection"}
+                    {deck.cards.length > 0 ? <CardsList cards={deck.cards} theme={theme} /> : "No Pokémon found, check your internet connection"}
                 </section>
             </main>
             <footer>
@@ -99,7 +99,6 @@ const Div = styled.div`
     main {
         width: 100vw;
         padding: 0px 80px 120px 80px;
-        // ajustar o padding-bottom
     }
 
     ul {
@@ -129,6 +128,7 @@ const Load = styled.button`
     position: absolute;
     bottom: 95px;
     right: 35px;
+    
     background-color: ${props => props.theme.buttonBackground};
     font-size: 10px;
     padding: 8px;
