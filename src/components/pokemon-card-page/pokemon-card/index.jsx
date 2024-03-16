@@ -5,38 +5,13 @@ import styled from "styled-components"
 import { ThemeContext } from '../../../contexts/theme-contexts'
 import React, { useContext } from "react";
 import { PokemonCardDescription } from '../pokemon-card-description'
-
-async function getCard(id) {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
-    return await response.json()
-}
-
-const getAbilitiesDescription = async (api) => {
-    const response = await fetch(api)
-    return await response.json()
-}
+import { useGetCard } from '../../../hooks/useGetCard'
 
 export const PokemonCard = () => {
 
-    const [card, setCard] = useState({ skills: '', description: '' })
+    const card = useGetCard()
 
     const { theme } = useContext(ThemeContext)
-
-    const { id } = useParams()
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const resultCard = await getCard(id)
-
-            const abilitiesLinks = await resultCard.abilities.map((link) => {
-                return link.ability.url
-            })
-            const abilitiesDescription = await Promise.all(abilitiesLinks.map((api) => getAbilitiesDescription(api)))
-
-            setCard({ skills: resultCard, description: abilitiesDescription })
-        }
-        fetchData()
-    }, [])
 
     return (
         <Div theme={theme}>
@@ -82,6 +57,10 @@ const Header = styled.header`
         text-shadow: none;
         color: ${props => props.theme.buttonColor};
     }
+
+    @media (max-width: 1024px) {
+        width: 100%;
+    }
 `
 
 const Footer = styled.footer`
@@ -107,5 +86,9 @@ const Footer = styled.footer`
         transform: translateY(-58%);
         background-color: white;
         font-size: 12px;
+    }
+
+    @media (max-width: 1024px) {
+        width: 100%;
     }
 `

@@ -38,7 +38,7 @@ export const PokemonCardDescription = ({ card, theme }) => {
 
 const Div = styled.div`
     img{
-        min-width: 200px;
+        width: 200px;
     }
 
     ul{
@@ -69,6 +69,25 @@ const Div = styled.div`
                 font-size: 12px;
                 line-height: 20px;
                 padding: 15px;
+            }
+        }
+    }
+
+    @media (max-width: 415px) {
+
+        h3 {
+            line-height: 25px;
+        }
+
+        ul{
+            li{
+                margin-bottom: 30px;
+                margin-left: 0px;
+                width: 100%;
+
+                p{
+                    text-align: center;
+                }
             }
         }
     }

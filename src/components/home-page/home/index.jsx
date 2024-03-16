@@ -1,76 +1,64 @@
 import styled from "styled-components"
-import { useState, useEffect } from "react";
 import { ThemeContext } from '../../../contexts/theme-contexts'
 import React, { useContext } from "react";
 import { ButtonTheme } from '../button-theme'
 import { CardsList } from '../cards-list'
-
-async function createDeck(array) {
-    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=10&offset=${array}`);
-    return await response.json();
-}
-
-async function createCards(pokemons) {
-    const response = await fetch(pokemons);
-    return await response.json();
-}
+import { ButtonFilter } from "../button-filter";
+import { useGetDeck } from '../../../hooks/useGetDeck'
 
 export const Home = () => {
 
-    const [visible, setVisible] = useState(true)
+    const { 
+        deck, load, visible, filteredDeck, filterPokemons, setFilteredDeck 
+    } = useGetDeck()
 
-    const [deck, setDeck] = useState({
-        cards: []
-    })
+    const [filterNotFound, setFilterNotFound] = React.useState(false)
 
     const { theme } = useContext(ThemeContext)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await createDeck(24)
-            const links = await data.results.map((link) => {
-                return link.url
-            })
+    const handleSelectChange = async (event) => {
+        const value = event.target.value
 
-            // Promise.all([array de promises que quero o retorno])
-            const pokemons = await Promise.all(links.map((url) => createCards(url)))
-
-            setDeck({
-                cards: pokemons
+        if (value === 'Filter Types') {
+            setFilteredDeck({
+                cards: null
             })
         }
-        fetchData()
-    }, [])
 
-    const load = async () => {
-        const data = await createDeck(0)
-        const links = await data.results.map((link) => {
-            return link.url
+        deck.cards.map(pokemon => {
+            pokemon.types.filter(({type}) => {
+                if (type.name !== value) {
+                    setFilterNotFound(true)
+                    return; 
+                }
+
+                filterPokemons(type)
+                setFilterNotFound(false)
+
+            })
         })
 
-        const newPokemons = await Promise.all(links.map((url) => createCards(url)))
-
-        setDeck({
-            cards: [...deck.cards, ...newPokemons]
-        })
-
-        setVisible(false)
+    
     }
-
+    
     return (
         <Div theme={theme}>
             <header id="home">
                 <ButtonTheme />
                 <h1>Select your favorite Pokémon</h1>
+                <ButtonFilter theme={theme} handleSelect={(e) => handleSelectChange(e)} />
             </header>
             <main>
                 <section>
-                    {deck.cards.length > 0 ? <CardsList cards={deck.cards} theme={theme} /> : "No Pokémon found, check your internet connection"}
+                    <p>{filterNotFound && "Não há pokemons desse tipo especifico!"}</p>
+                    {deck.cards ? <CardsList cards={filteredDeck.cards === null ? deck.cards : filteredDeck.cards} theme={theme} /> : "No Pokémon found, check your internet connection"}
                 </section>
             </main>
             <footer>
-                <Top href="#home">home</Top>
-                <Load theme={theme} onClick={load} isVisible={visible}>Load more</Load>
+                <ButtonTop href="#home">home</ButtonTop>
+                <ButtonLoad theme={theme} onClick={load} isVisible={visible}>
+                    Load more
+                </ButtonLoad>
             </footer>
         </Div>
     )
@@ -122,9 +110,31 @@ const Div = styled.div`
         bottom: 0;
         text-shadow: none;
     }
+
+    @media (max-width: 1024px) {
+        header {
+            width: 100%;
+        }
+
+        main {
+            width: 100%;
+        }
+
+        footer {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 415px) {
+        h1 {
+            font-size: 20px;
+            line-height: 25px;
+            text-align: center;
+        }
+    }
 `
 
-const Load = styled.button`
+const ButtonLoad = styled.button`
     position: absolute;
     bottom: 95px;
     right: 35px;
@@ -135,9 +145,19 @@ const Load = styled.button`
     color: ${props => props.theme.buttonColor};
     cursor: pointer;
     visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+
+    @media (max-width: 1024px) {
+        bottom: 83px;
+        right: 12px;
+    }
+
+    @media (max-width: 415px) {
+        width: 60px;
+        line-height: 16px;
+    }
 `
 
-const Top = styled.a`
+const ButtonTop = styled.a`
     width: 100px;
     height: 100px;
     border: 15px solid black;

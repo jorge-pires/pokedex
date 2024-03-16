@@ -25,4 +25,9 @@ const Theme = styled.button`
     text-shadow: none;
     color: ${props => props.theme.buttonColor};
     cursor: pointer;
+
+    @media (max-width: 1024px) {
+        top: 10px;
+        left: 10px;
+    }
 `
