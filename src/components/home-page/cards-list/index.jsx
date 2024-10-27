@@ -10,7 +10,7 @@ export const CardsList = ({ cards, theme }) => {
                         <Pokemon Load theme={theme} key={index}>
                             <Link to={`/pokemon/${card.id}`}>
                                 <h3>{card.name}</h3>
-                                <img src={card.sprites.front_default} alt={card.name} />
+                                <img src={card.image} alt={card.name} />
                             </Link>
                         </Pokemon>
                     )

@@ -4,31 +4,31 @@ export const PokemonCardDescription = ({ card, theme }) => {
 
     return (
         <Div theme={theme}>
-            <h2>{card.skills.name}</h2>
-            <img src={card.skills.sprites.front_default} alt={card.skills.name} />
+            <h2>{card.name}</h2>
+            <img src={card.image} alt={card.name} />
             <ul>
                 <h3>List of abilities:</h3>
-                {card.description.map((ability, index) =>
+                {card.descriptions.map((ability, index) =>
                 (
                     <li key={index}>
                         <h4>{ability.name}:</h4>
-                        <p>{ability.effect_entries[1].effect}</p>
+                        <p>{ability.effect}</p>
                     </li>
                 ))}
             </ul>
             <ul>
                 <h3>List of moves:</h3>
-                {card.skills.moves.map((move, index) => (
+                {card.moves.map((move, index) => (
                     <li key={index}>
-                        <p>{move.move.name}</p>
+                        <p>{move.move}</p>
                     </li>
                 ))}
             </ul>
             <ul>
                 <h3>Types:</h3>
-                {card.skills.types.map((type, index) => (
+                {card.types.map((type, index) => (
                     <li key={index}>
-                        <p>{type.type.name}</p>
+                        <p>{type.type}</p>
                     </li>
                 ))}
             </ul>

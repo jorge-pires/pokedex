@@ -1,44 +1,37 @@
 import styled from "styled-components"
 import { ThemeContext } from '../../../contexts/theme-contexts'
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ButtonTheme } from '../button-theme'
 import { CardsList } from '../cards-list'
 import { ButtonFilter } from "../button-filter";
+import { useFilter } from "../../../hooks/useFilter";
 import { useGetDeck } from '../../../hooks/useGetDeck'
 
 export const Home = () => {
 
-    const { 
-        deck, load, visible, filteredDeck, filterPokemons, setFilteredDeck 
-    } = useGetDeck()
+    const { deck, load } = useGetDeck()
 
-    const [filterNotFound, setFilterNotFound] = React.useState(false)
+    const { filteredDeck, setFilteredDeck, filterDeck } = useFilter()
 
     const { theme } = useContext(ThemeContext)
 
-    const handleSelectChange = async (event) => {
+    const [ visible, setVisible ] = useState(true)
+
+    const handleSelectChange = (event) => {
         const value = event.target.value
 
         if (value === 'Filter Types') {
             setFilteredDeck({
                 cards: null
-            })
+            }) 
+
+            setVisible(true)
+
+            return
         }
 
-        deck.cards.map(pokemon => {
-            pokemon.types.filter(({type}) => {
-                if (type.name !== value) {
-                    setFilterNotFound(true)
-                    return; 
-                }
-
-                filterPokemons(type)
-                setFilterNotFound(false)
-
-            })
-        })
-
-    
+        filterDeck(value)
+        setVisible(false)
     }
     
     return (
@@ -46,11 +39,10 @@ export const Home = () => {
             <header id="home">
                 <ButtonTheme />
                 <h1>Select your favorite Pokémon</h1>
-                <ButtonFilter theme={theme} handleSelect={(e) => handleSelectChange(e)} />
+                <ButtonFilter theme={theme} handleSelect={handleSelectChange} />
             </header>
             <main>
                 <section>
-                    <p>{filterNotFound && "Não há pokemons desse tipo especifico!"}</p>
                     {deck.cards ? <CardsList cards={filteredDeck.cards === null ? deck.cards : filteredDeck.cards} theme={theme} /> : "No Pokémon found, check your internet connection"}
                 </section>
             </main>
@@ -75,7 +67,7 @@ const Div = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 100vw;
+        width: 100%;
         padding: 70px;
         position: relative;
     }
@@ -85,7 +77,7 @@ const Div = styled.div`
     }
 
     main {
-        width: 100vw;
+        width: 100%;
         padding: 0px 80px 120px 80px;
     }
 
@@ -101,7 +93,7 @@ const Div = styled.div`
 
     footer {
         background-color: white;
-        width: 100vw;
+        width: 100%;
         height: 70px;
         display: flex;
         justify-content: center;
@@ -111,21 +103,7 @@ const Div = styled.div`
         text-shadow: none;
     }
 
-    @media (max-width: 1024px) {
-        header {
-            width: 100%;
-        }
-
-        main {
-            width: 100%;
-        }
-
-        footer {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 415px) {
+    @media (max-width: 821px) {
         h1 {
             font-size: 20px;
             line-height: 25px;
@@ -144,7 +122,7 @@ const ButtonLoad = styled.button`
     padding: 8px;
     color: ${props => props.theme.buttonColor};
     cursor: pointer;
-    visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
+    visibility: ${({isVisible}) => (isVisible ? 'visible' : 'hidden')};
 
     @media (max-width: 1024px) {
         bottom: 83px;

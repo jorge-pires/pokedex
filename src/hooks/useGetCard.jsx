@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { cardData } from '../objects/pokemon-card-data'
 
 async function getCard(id) {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
@@ -13,20 +14,28 @@ const getAbilitiesDescription = async (api) => {
 
 export const useGetCard = () => {
 
-    const [card, setCard] = useState({ skills: '', description: '' })
+    const [card, setCard] = useState({})
 
     const { id } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
-            const resultCard = await getCard(id)
+            const pokemonCard = await getCard(id)
 
-            const abilitiesLinks = await resultCard.abilities.map((link) => {
+            cardData.setData(pokemonCard)
+
+            const abilitiesLinks = await pokemonCard.abilities.map((link) => {
                 return link.ability.url
             })
             const abilitiesDescription = await Promise.all(abilitiesLinks.map((api) => getAbilitiesDescription(api)))
 
-            setCard({ skills: resultCard, description: abilitiesDescription })
+            cardData.setDescription(abilitiesDescription)
+
+            console.log(card)
+
+            setCard({
+                cardData
+            })
         }
         fetchData()
     }, [])
