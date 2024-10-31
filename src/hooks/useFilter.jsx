@@ -18,19 +18,24 @@ export function useFilter() {
     })
 
     const filterDeck = async (pokemonType) => {
-        const data = await createDeck(pokemonType)
+        try {
+            const data = await createDeck(pokemonType)
 
-        const links = await data.pokemon.map((link) => {
-            return link.pokemon.url
-        })
+            const links = await data.pokemon.map((link) => {
+                return link.pokemon.url
+            })
 
-        const pokemonsData = await Promise.all(links.map((url) => createCards(url)))
+            const pokemonsData = await Promise.all(links.map((url) => createCards(url)))
 
-        const pokemons = homeCardData(pokemonsData)
+            const pokemons = homeCardData(pokemonsData)
 
-        setFilteredDeck({
-            cards: pokemons
-        })
+            setFilteredDeck({
+                cards: pokemons
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     return { filteredDeck, setFilteredDeck, filterDeck }

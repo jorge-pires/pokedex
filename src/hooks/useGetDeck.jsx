@@ -22,18 +22,23 @@ export function useGetDeck() {
     useEffect(() => {
 
         const fetchData = async () => {
-            const data = await createDeck()
-            const links = await data.results.map((link) => {
-                return link.url
-            })
+            try {
+                const data = await createDeck()
+                const links = await data.results.map((link) => {
+                    return link.url
+                })
 
-            const pokemonsData = await Promise.all(links.map((url) => createCards(url)))
+                const pokemonsData = await Promise.all(links.map((url) => createCards(url)))
 
-            const pokemons = homeCardData(pokemonsData)
+                const pokemons = homeCardData(pokemonsData)
 
-            setDeck({
-                cards: pokemons
-            })
+                setDeck({
+                    cards: pokemons
+                })
+            }
+            catch (err) {
+                console.log(err);
+            }
         }
 
         fetchData()
@@ -43,20 +48,25 @@ export function useGetDeck() {
 
         const newOffset = offset + 10;
 
-        const data = await createDeck(newOffset)
-        const links = await data.results.map((link) => {
-            return link.url
-        })
+        try {
+            const data = await createDeck(newOffset)
+            const links = await data.results.map((link) => {
+                return link.url
+            })
 
-        const newPokemonsData = await Promise.all(links.map((url) => createCards(url)))
+            const newPokemonsData = await Promise.all(links.map((url) => createCards(url)))
 
-        const newPokemons = homeCardData(newPokemonsData)
+            const newPokemons = homeCardData(newPokemonsData)
 
-        setDeck({
-            cards: [...deck.cards, ...newPokemons]
-        })
+            setDeck({
+                cards: [...deck.cards, ...newPokemons]
+            })
 
-        setOffset(newOffset)
+            setOffset(newOffset)
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
     return { deck, load }

@@ -1,9 +1,4 @@
 const cardData = {
-  name: '',
-  image: '',
-  types: '',
-  moves: '',
-  descriptions: [],
   setData(pokemonCard) {
     const moves = pokemonCard.moves.map(data => ({
       move: data.move.name

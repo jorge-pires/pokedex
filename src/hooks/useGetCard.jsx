@@ -14,28 +14,29 @@ const getAbilitiesDescription = async (api) => {
 
 export const useGetCard = () => {
 
-    const [card, setCard] = useState({})
+    const [card, setCard] = useState({ cardData })
 
     const { id } = useParams()
 
     useEffect(() => {
         const fetchData = async () => {
-            const pokemonCard = await getCard(id)
+            try {
+                const pokemonCard = await getCard(id)
 
-            cardData.setData(pokemonCard)
+                cardData.setData(pokemonCard)
 
-            const abilitiesLinks = await pokemonCard.abilities.map((link) => {
-                return link.ability.url
-            })
-            const abilitiesDescription = await Promise.all(abilitiesLinks.map((api) => getAbilitiesDescription(api)))
+                const abilitiesLinks = await pokemonCard.abilities.map((link) => {
+                    return link.ability.url
+                })
+                const abilitiesDescription = await Promise.all(abilitiesLinks.map((api) => getAbilitiesDescription(api)))
 
-            cardData.setDescription(abilitiesDescription)
+                cardData.setDescription(abilitiesDescription)
 
-            console.log(card)
-
-            setCard({
-                cardData
-            })
+                setCard({ cardData })
+            }
+            catch (err) {
+                console.log(err);
+            }
         }
         fetchData()
     }, [])

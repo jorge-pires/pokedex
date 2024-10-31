@@ -4,11 +4,11 @@ export const PokemonCardDescription = ({ card, theme }) => {
 
     return (
         <Div theme={theme}>
-            <h2>{card.name}</h2>
-            <img src={card.image} alt={card.name} />
+            <h2>{card.cardData.name}</h2>
+            <img src={card.cardData.image} alt={card.cardData.name} />
             <ul>
                 <h3>List of abilities:</h3>
-                {card.descriptions.map((ability, index) =>
+                {card.cardData.descriptions.map((ability, index) =>
                 (
                     <li key={index}>
                         <h4>{ability.name}:</h4>
@@ -18,7 +18,7 @@ export const PokemonCardDescription = ({ card, theme }) => {
             </ul>
             <ul>
                 <h3>List of moves:</h3>
-                {card.moves.map((move, index) => (
+                {card.cardData.moves.map((move, index) => (
                     <li key={index}>
                         <p>{move.move}</p>
                     </li>
@@ -26,7 +26,7 @@ export const PokemonCardDescription = ({ card, theme }) => {
             </ul>
             <ul>
                 <h3>Types:</h3>
-                {card.types.map((type, index) => (
+                {card.cardData.types.map((type, index) => (
                     <li key={index}>
                         <p>{type.type}</p>
                     </li>

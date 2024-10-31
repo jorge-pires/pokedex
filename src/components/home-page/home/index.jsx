@@ -43,7 +43,7 @@ export const Home = () => {
             </header>
             <main>
                 <section>
-                    {deck.cards ? <CardsList cards={filteredDeck.cards === null ? deck.cards : filteredDeck.cards} theme={theme} /> : "No Pokémon found, check your internet connection"}
+                    {deck.cards ? <CardsList cards={filteredDeck.cards === null ? deck.cards : filteredDeck.cards} theme={theme} /> : "No Pokémons found, check your internet connection"}
                 </section>
             </main>
             <footer>

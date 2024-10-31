@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import styled from "styled-components"
 import { ThemeContext } from '../../../contexts/theme-contexts'
@@ -18,8 +16,8 @@ export const PokemonCard = () => {
             <Header theme={theme} id='home'>
                 <Link to='/'>Return to all pokémon</Link>
             </Header>
-            {card.skills && (<Section theme={theme}>
-                {card.description.length > 0 ? <PokemonCardDescription card={card} theme={theme}/> : "No Pokémon found, check your internet connection"}
+            {card.cardData.name && (<Section theme={theme}>
+                {card.cardData.name !== null ? <PokemonCardDescription card={card} theme={theme}/> : "No Pokémon found, check your internet connection"}
                 <Footer>
                     <a href="#home">home</a>
                 </Footer>
@@ -33,6 +31,7 @@ const Div = styled.div`
 `
 
 const Section = styled.section`
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     flex-direction: column;
