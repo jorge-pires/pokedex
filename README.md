@@ -1,6 +1,6 @@
 # Pokedéx
 
-Esse projeto é feito para você poder ecolher o seu Pokémon favorito e ver suas informações detalhadas.
+Esse projeto é feito para você poder escolher o seu Pokémon favorito e ver suas informações detalhadas.
 
 Na página inicial podemos selecionar um Pokémon, e ao clicar nele é possível ver suas informações (habilidades, movimentos e seus tipos). Também foi criado um filtro que possibilita filtrar o tipo de Pokémon desejado, além de ter um botão para alterar o tema do site.
 
@@ -24,9 +24,9 @@ Essas Tecnologias foram usadas para dar uma velocidade maior de processamento ao
 
 ## Dificuldades
 
-Minha maior dificuldade foi trabalhar com o "useState( )" do projeto, devido a não conseguir setar um estado mantendo o estado incial vazio. E outra dificuldade foi lidar com muiltiplas promisses ao mesmo tempo.
+Minha maior dificuldade foi trabalhar com o "useState( )" do projeto, devido a não conseguir setar um estado mantendo o estado inicial vazio. E outra dificuldade foi lidar com múltiplas promisses ao mesmo tempo.
 
-Para resolver o problema do "useState( )", fiz vários testes com o "console.log( )" para ver o que estava acontecendo com o meu estado inicial, até que consegui entender e resolver. E em relação as promisses, é necessário usar "await Promisse.all( )" para poder fazer um map no link das APIs de cada pokemon e pegar suas informações individualmente.
+Para resolver o problema do "useState( )", fiz vários testes com o "console.log( )" para ver o que estava acontecendo com o meu estado inicial, até que consegui entender e resolver. E em relação as promisses, é necessário usar "await Promisse.all( )" para poder fazer um map no link das APIs de cada Pokémon e pegar suas informações individualmente.
 
 ## Como Utilizar
 
