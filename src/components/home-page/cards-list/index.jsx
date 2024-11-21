@@ -1,5 +1,5 @@
-import styled from "styled-components"
 import { Link } from 'react-router-dom'
+import { Pokemon } from "./styled";
 
 export const CardsList = ({ cards, theme }) => {
     return (
@@ -19,19 +19,3 @@ export const CardsList = ({ cards, theme }) => {
         </ul>
     )
 }
-
-const Pokemon = styled.li`
-    a{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 142px;
-        font-size: 12px;
-        color: ${props => props.theme.color};
-    }
-
-    img{
-        width: 130px;
-    }
-`

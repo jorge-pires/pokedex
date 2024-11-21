@@ -1,62 +1,6 @@
 import styled from "styled-components"
-import { ThemeContext } from '../../../contexts/theme-contexts'
-import React, { useContext, useState } from "react";
-import { ButtonTheme } from '../button-theme'
-import { CardsList } from '../cards-list'
-import { ButtonFilter } from "../button-filter";
-import { useFilter } from "../../../hooks/useFilter";
-import { useGetDeck } from '../../../hooks/useGetDeck'
 
-export const Home = () => {
-
-    const { deck, load } = useGetDeck()
-
-    const { filteredDeck, setFilteredDeck, filterDeck } = useFilter()
-
-    const { theme } = useContext(ThemeContext)
-
-    const [ visible, setVisible ] = useState(true)
-
-    const handleSelectChange = (event) => {
-        const value = event.target.value
-
-        if (value === 'Filter Types') {
-            setFilteredDeck({
-                cards: null
-            }) 
-
-            setVisible(true)
-
-            return
-        }
-
-        filterDeck(value)
-        setVisible(false)
-    }
-    
-    return (
-        <Div theme={theme}>
-            <header id="home">
-                <ButtonTheme />
-                <h1>Select your favorite Pokémon</h1>
-                <ButtonFilter theme={theme} handleSelect={handleSelectChange} />
-            </header>
-            <main>
-                <section>
-                    {deck.cards ? <CardsList cards={filteredDeck.cards === null ? deck.cards : filteredDeck.cards} theme={theme} /> : "No Pokémons found, check your internet connection"}
-                </section>
-            </main>
-            <footer>
-                <ButtonTop href="#home">home</ButtonTop>
-                <ButtonLoad theme={theme} onClick={load} isVisible={visible}>
-                    Load more
-                </ButtonLoad>
-            </footer>
-        </Div>
-    )
-}
-
-const Div = styled.div`
+export const Div = styled.div`
     min-height: 100vh;
     overflow: hidden;
     background-color: ${props => props.theme.background};
@@ -112,7 +56,7 @@ const Div = styled.div`
     }
 `
 
-const ButtonLoad = styled.button`
+export const ButtonLoad = styled.button`
     position: absolute;
     bottom: 95px;
     right: 35px;
@@ -135,7 +79,7 @@ const ButtonLoad = styled.button`
     }
 `
 
-const ButtonTop = styled.a`
+export const ButtonTop = styled.a`
     width: 100px;
     height: 100px;
     border: 15px solid black;

@@ -1,36 +1,10 @@
-import { Link } from 'react-router-dom'
 import styled from "styled-components"
-import { ThemeContext } from '../../../contexts/theme-contexts'
-import React, { useContext } from "react";
-import { PokemonCardDescription } from '../pokemon-card-description'
-import { useGetCard } from '../../../hooks/useGetCard'
 
-export const PokemonCard = () => {
-
-    const card = useGetCard()
-
-    const { theme } = useContext(ThemeContext)
-
-    return (
-        <Div theme={theme}>
-            <Header theme={theme} id='home'>
-                <Link to='/'>Return to all pokémon</Link>
-            </Header>
-            {card.cardData.name && (<Section theme={theme}>
-                {card.cardData.name !== null ? <PokemonCardDescription card={card} theme={theme}/> : "No Pokémon found, check your internet connection"}
-                <Footer>
-                    <a href="#home">home</a>
-                </Footer>
-            </Section>)}
-        </Div>
-    )
-}
-
-const Div = styled.div`
+export const Div = styled.div`
     min-height: 100vh;
 `
 
-const Section = styled.section`
+export const Section = styled.section`
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -41,7 +15,7 @@ const Section = styled.section`
     color: ${props => props.theme.color};
 `
 
-const Header = styled.header`
+export const Header = styled.header`
     width: 100%;
     position: relative;
     
@@ -62,7 +36,7 @@ const Header = styled.header`
     }
 `
 
-const Footer = styled.footer`
+export const Footer = styled.footer`
     background-color: white;
     width: 100vw;
     height: 70px;
