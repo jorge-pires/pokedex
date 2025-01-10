@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "homepage": "https://jorge-pires.github.io/pokedex",
+    "homepage": "https://jorge-pires.github.io/pokedex/",
     "dev": "vite",
     "test": "jest",
     "build": "vite build",
